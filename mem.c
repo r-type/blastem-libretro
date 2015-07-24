@@ -18,7 +18,11 @@
 
 #ifdef __amd64
 int hint_location;
+#ifdef __APPLE__
+#define PAGE_MASK (4096-1)
+#else
 #define PAGE_MASK     (getpagesize() - 1)
+#endif
 #define round_page(x) ((((uintptr_t)(x)) + PAGE_MASK) & ~(PAGE_MASK))
 #endif
 
