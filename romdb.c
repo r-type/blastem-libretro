@@ -45,6 +45,9 @@ char * i2c_states[] = {
 	"write_ack"
 };
 
+void * menu_write_w(uint32_t address, void * context, uint16_t value);
+uint16_t menu_read_w(uint32_t address, void * context);
+
 void eeprom_init(eeprom_state *state, uint8_t *buffer, uint32_t size)
 {
 	state->slave_sda = 1;
