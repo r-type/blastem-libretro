@@ -43,7 +43,7 @@ tern_node * parse_config_int(char **state, int started, int *line)
 	config_data = started ? NULL : *state;
 	while ((curline = strtok_r(config_data, "\n", state)))
 	{
-		
+
 		config_data = NULL;
 		curline = strip_ws(curline);
 		int len = strlen(curline);
@@ -61,7 +61,7 @@ tern_node * parse_config_int(char **state, int started, int *line)
 			}
 			fatal_error("unexpected } on line %d\n", *line);
 		}
-		
+
 		char * end = curline + len - 1;
 		if (*end == '{') {
 			*end = 0;
@@ -128,7 +128,7 @@ tern_node * parse_config_file_assets(char *config_path)
 	if (!config_size) {
 		goto config_empty;
 	}
-	
+
 	char * config_data = malloc(config_size+1);
 	if (SDL_RWread(rw, config_data, 1, config_size) != config_size) {
 		goto config_read_fail;
@@ -152,12 +152,12 @@ tern_node * load_config()
 	if (ret) {
 		return ret;
 	}
-	
+
 	ret = parse_config_file_assets("default.cfg");
 	if (ret) {
 		return ret;
 	}
-	
+
 	fatal_error("Failed to find a config file in internal storage or in the blastem APK\n");
 	//this will never get reached, but the compiler doesn't know that. Let's make it happy
 	return NULL;
