@@ -167,29 +167,6 @@ tern_node * load_config()
 
 tern_node * load_config()
 {
-	char * exe_dir;
-	char * home = get_home_dir();
-	if (home) {		
-		char * path = alloc_concat(home, "/.config/blastem/blastem.cfg");
-		tern_node * ret = parse_config_file(path);
-		free(path);
-		if (ret) {
-			return ret;
-		}
-	}
-	
-	exe_dir = get_exe_dir();
-	if (exe_dir) {		
-		path = alloc_concat(exe_dir, "/default.cfg");
-		ret = parse_config_file(path);
-		free(path);
-		if (ret) {
-			return ret;
-		}
-	}
-	
-	fatal_error("Failed to find a config file in ~/.config/blastem/blastem.cfg or in the blastem executable directory\n");
-	//this will never get reached, but the compiler doesn't know that. Let's make it happy
 	return NULL;
 }
 
