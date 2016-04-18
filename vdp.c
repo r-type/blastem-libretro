@@ -847,7 +847,7 @@ void render_map_output(uint32_t line, int32_t col, vdp_context * context)
 						src |= DBG_HILIGHT;
 						colors += CRAM_SIZE*2;
 					}
-					
+
 					uint32_t outpixel;
 					if (context->debug) {
 						outpixel = context->debugcolors[src];
@@ -949,7 +949,7 @@ void vdp_advance_line(vdp_context *context)
 	} else if (!(context->latched_mode & BIT_PAL) &&  context->vcounter == 0xEB) {
 		context->vcounter = 0x1E5;
 	}
-	
+
 	if (context->vcounter > (context->latched_mode & BIT_PAL ? PAL_INACTIVE_START : NTSC_INACTIVE_START)) {
 		context->hint_counter = context->regs[REG_HINT];
 	} else if (context->hint_counter) {
@@ -1020,7 +1020,7 @@ void vdp_advance_line(vdp_context *context)
 			vdp_advance_line(context);\
 		}\
 		CHECK_LIMIT
-		
+
 #define SPRITE_RENDER_H40(slot) \
 	case slot:\
 		render_sprite_cells( context);\
@@ -1038,7 +1038,7 @@ void vdp_advance_line(vdp_context *context)
 			}\
 		}\
 		CHECK_ONLY
-		
+
 #define SPRITE_RENDER_H32(slot) \
 	case slot:\
 		render_sprite_cells( context);\
@@ -1051,7 +1051,7 @@ void vdp_advance_line(vdp_context *context)
 		}\
 		context->cycles += slot_cycles;\
 		CHECK_ONLY
-			
+
 
 void vdp_h40(vdp_context * context, uint32_t target_cycles)
 {
@@ -1679,22 +1679,7 @@ uint16_t vdp_control_port_read(vdp_context * context)
 	uint32_t line= context->vcounter;
 	uint32_t slot = context->hslot;
 	uint32_t inactive_start = (context->latched_mode & BIT_PAL ? PAL_INACTIVE_START : NTSC_INACTIVE_START);
-	if (
-		(
-			line > inactive_start
-			&& line < 0x1FF
-		)
-		|| (line == inactive_start 
-			&& (
-				slot >= (context->regs[REG_MODE_4] & BIT_H40 ? VBLANK_START_H40 : VBLANK_START_H32)
-				|| slot < (context->regs[REG_MODE_4] & BIT_H40 ? LINE_CHANGE_H40 : LINE_CHANGE_H32)
-			)
-		)
-		|| (line == 0x1FF
-			&& slot < (context->regs[REG_MODE_4] & BIT_H40 ? VBLANK_START_H40 : VBLANK_START_H32))
-			&& slot >= (context->regs[REG_MODE_4] & BIT_H40 ? LINE_CHANGE_H40 : LINE_CHANGE_H32)
-		|| !(context->regs[REG_MODE_2] & BIT_DISP_EN)
-	) {
+	if ((line >= inactive_start && line < 0x1FF) || !(context->regs[REG_MODE_2] & BIT_DISP_EN)) {
 		value |= 0x8;
 	}
 	if (context->regs[REG_MODE_4] & BIT_H40) {
@@ -1992,4 +1977,5 @@ void vdp_int_ack(vdp_context * context, uint16_t int_num)
 		context->flags2 &= ~FLAG2_HINT_PENDING;
 	}
 }
+
 
