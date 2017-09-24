@@ -71,7 +71,19 @@ OBJECTS += \
    ../blastem.o\
    ../vdp.o\
    ../io.o\
+   ../i2c.o\
    ../romdb.o\
+   ../serialize.o\
+   ../sega_mapper.o\
+   ../system.o\
+   ../hash.o\
+   ../arena.o\
+   ../xband.o\
+   ../realtec.o\
+   ../multi_game.o\
+   ../nor.o\
+   ../sms.o\
+   ../genesis.o\
    ../gst.o
 
 ifeq ($(WITH_DYNAREC),x86)
