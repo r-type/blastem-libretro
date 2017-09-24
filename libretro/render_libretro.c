@@ -105,13 +105,15 @@ void render_alloc_surfaces()
    context->evenbuf = ((char *)context->oddbuf) + 512 * 256 * 4;
 */
 //context->fb= calloc(1, 512 * 256 * 4 * 2);
-texbuffer[0]= calloc(1, 512 * 512 * 4 );
-texbuffer[1]= calloc(1, 512 * 512 * 4 );
+   texbuffer[0]= calloc(1, 512 * 512 * 4 );
+   texbuffer[1]= calloc(1, 512 * 512 * 4 );
 }
 
 void render_init(int width, int height, char * title/*, uint32_t fps*/,uint8_t fullscreen)
 {
-render_alloc_surfaces();
+   render_alloc_surfaces();
+   handle_joy_added(0);
+   handle_joy_added(1);
 }
 
 void render_context(vdp_context * context)
