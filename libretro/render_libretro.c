@@ -19,6 +19,14 @@
 
 #define NUM_JOYPADS 2
 
+char core_romdb[512];
+
+#ifdef _WIN32
+char slash = '\\';
+#else
+char slash = '/';
+#endif
+
 static cothread_t main_thread = NULL;
 static cothread_t cpu_thread  = NULL;
 
@@ -474,7 +482,7 @@ static int parse_rom(const uint8_t *data, size_t size)
 
    return size;
 }
-
+/*
 static tern_node *init_rom_db(void)
 {
    tern_node *head = NULL;
@@ -495,7 +503,7 @@ static tern_node *init_rom_db(void)
 
    return head;
 }
-
+*/
 
 static void cpu_thread_wrapper()
 {
@@ -511,6 +519,13 @@ static void cpu_thread_wrapper()
 
    if (game_info == NULL)
       return;
+
+   const char *dir = NULL;
+
+   if (env_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir && *dir)
+   {
+      sprintf(core_romdb,"%s%crom.db\0",dir,slash);
+   }
 
    render_init(0, 0, NULL/*, 60*/, true);
 
