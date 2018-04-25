@@ -128,7 +128,7 @@ void render_context(vdp_context * context)
 {
    static uint32_t screen[320 * 480];
    unsigned width  = context->regs[REG_MODE_4] & BIT_H40 ? 320.0f : 256.0f;
-   unsigned height = 224;
+   unsigned height = render_emulated_height();
    unsigned skip   = width;
    uint32_t *src = (uint32_t*)context->fb;//framebuf;
    uint32_t *dst = screen;
@@ -143,9 +143,13 @@ void render_context(vdp_context * context)
          dst += width;
    }
 
-   for (i = 0; i < 224; ++i)
+   /* Skip the top overscan. */
+   for (i = 0; i < render_overscan_top(); ++i)
+      src += width;
+
+   for (i = 0; i < height; ++i)
    {
-      memcpy(dst, src, width*sizeof(uint32_t));
+      memcpy(dst, src+render_overscan_left(), width*sizeof(uint32_t));
       src += width;
       dst += skip;
    }
